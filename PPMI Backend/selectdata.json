@@ -1,0 +1,25 @@
+{"selectdata" :
+	{"Vital Signs" :
+		{"filename" : "Desktop/PPMI Data/Medical/Vital_Signs.csv",
+		 "testlist" : ["Weight", "Height", "Temp", "Supine BP Systolic", "Supine BP Diastolic", "Supine Heart Rate", 
+		              "Standing BP Systolic", "Standing BP Diastolic", "Standing Heart Rate"],
+		 "testdict" : {"WGTKG":"Weight", "HTCM":"Height", "TEMPC":"Temp", "SYSSUP":"Supine BP Systolic",
+	                  "DIASUP":"Supine BP Diastolic", "HRSUP":"Supine Heart Rate", "SYSSTND":"Standing BP Systolic",
+	                  "DIASTND":"Standing BP Diastolic", "HRSTND":"Standing Heart Rate"}},
+	"DaTSCAN" :
+		{"filename" : "Desktop/PPMI Data/DaTSCAN/DaTscan_Striatal_Binding_Ratio_Results.csv",
+		 "testlist" : ["DaTSCAN Right Caudate", "DaTSCAN Left Caudate", "DaTSCAN Right Putamen", "DaTSCAN Left Putamen"],
+		 "testdict" : {"CAUDATE_R":"DaTSCAN Right Caudate", "CAUDATE_L":"DaTSCAN Left Caudate", 
+	                  "PUTAMEN_R":"DaTSCAN Right Putamen", "PUTAMEN_L":"DaTSCAN Left Putamen"}},
+	"Olfactory" :
+		{"filename" : "Desktop/PPMI Data/Non-motor_Assessments/Univ._of_Pennsylvania_Smell_ID_Test.csv",
+		 "testlist" : ["UPSIT Olfactory Score"],
+		 "testdict" : {"UPSITBK1":"UPSIT Olfactory Score", "UPSITBK2":"UPSIT Olfactory Score",
+	                  "UPSITBK3":"UPSIT Olfactory Score", "UPSITBK4":"UPSIT Olfactory Score"}},
+	"Biomarker" :
+		{"filename" : "Desktop/PPMI Data/Biospecimen_Analysis/biomarkers_clean.csv",
+		 "testlist" : ["CSF Alpha-Synuclein", "CSF Amyloid-beta 42","CSF Phosphorylated Tau-Protein",
+                      "CSF Total Tau-Protein", "CSF Hemoglobin"],
+         "testdict" : {"CSF Alpha-synuclein":"CSF Alpha-Synuclein", "Abeta 42":"CSF Amyloid-beta 42", 
+                      "p-Tau181P":"CSF Phosphorylated Tau-Protein", "Total tau":"CSF Total Tau-Protein",
+                      "CSF Hemoglobin":"CSF Hemoglobin"}}}}
