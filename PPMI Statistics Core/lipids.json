@@ -1,0 +1,6 @@
+{"employdata" :
+	{"cohort" : ["HC", "PD", "SWEDD"],
+	 "Biomarker Lipid":
+	 	{"events"  : ["BL"],
+	 	 "tests"   : ["Apolipoprotein A1", "High-Density Lipoprotein", "Low-Density Lipoprotein", 
+    	 			  "Total Cholesterol", "Triglycerides"]}}}

@@ -1,0 +1,5 @@
+{"employdata" :
+	{"cohort" : ["HC", "PD", "SWEDD"],
+	 "DaTSCAN":
+	 	{"events"  : ["SC"],
+	 	 "tests"   : ["DaTSCAN Right Caudate", "DaTSCAN Left Caudate", "DaTSCAN Right Putamen", "DaTSCAN Left Putamen"]}}}

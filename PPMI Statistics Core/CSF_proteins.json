@@ -1,0 +1,6 @@
+{"employdata" :
+	{"cohort" : ["HC", "PD", "SWEDD"],
+	 "CSF Proteins":
+	 	{"events"  : ["BL"],
+	 	 "tests"   : ["CSF Alpha-Synuclein", "CSF Amyloid-beta 42","CSF Phosphorylated Tau-Protein",
+                      "CSF Total Tau-Protein"]}}}
