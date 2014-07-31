@@ -1,11 +1,13 @@
 Project PD-LEARN
 ================
 
+Analyze Data from a Large Parkinson's Clinical Study - a project in cooperation with <a href="http://www.zipfianacademy.com">Zipfian Academy</a> and <a href="www.bayesimpact.org">Bayes Impact</a>.
+
+### Author
+
 *Christian Bracher*<br>
 [cbracher69@gmail.com](mailto:cbracher69@gmail.com)<br>
 July 2014
-
-Analyze Data from a Large Parkinson's Clinical Study - a project in cooperation with <a href="http://www.zipfianacademy.com">Zipfian Academy</a> and <a href="www.bayesimpact.org">Bayes Impact</a>.
 
 ### Overview
 
@@ -50,10 +52,10 @@ The different elements of the project have been separated into several folders. 
 	Methods to facilitate statistical genome analysis using the PLINK utility.  (Results to be implemented into the data at a later point.)
 
 *	*PPMI Graphics Library*<br>
-	Methods to render one- and two-dimensional data plots as .png images
+	Methods to render one- and two-dimensional data plots as .png images.
 
 *	*PPMI Learn*<br>
-	Machine learning support for the core module
+	Machine learning support for the core module.
 
 *	*PPMI Statistics Core*<br>
 	Elements of the module responsible for data selection and analysis, communication with the user interface.
