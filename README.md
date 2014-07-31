@@ -1,8 +1,8 @@
 Project PD-LEARN
 ================
 
-*Christian Bracher*
-[cbracher69@gmail.com](mailto:cbracher69@gmail.com)
+*Christian Bracher*<br>
+[cbracher69@gmail.com](mailto:cbracher69@gmail.com)<br>
 July 2014
 
 Analyze Data from a Large Parkinson's Clinical Study - a project in cooperation with <a href="http://www.zipfianacademy.com">Zipfian Academy</a> and <a href="www.bayesimpact.org">Bayes Impact</a>.
@@ -33,31 +33,31 @@ This philosophy is implemented in a three stage design.  PPMI data is available 
 
 The data object is available to the statistics core module which handles data selection and slicing, simple statistics protocols, and all the correpondence with the 'frontend' that interfaces with the user.  The core also contains the machine learning unit, and hands rendering jobs to the graphics module.  (Some new display options, particularly suitable for PPMI data, have been developed for this project.)
 
-The 'frontend' is a graphical interface, suitable e.g. for a web browser, that lets the user select particular PPMI datasets, suggests modes of analysis, and displays the results in strictly graphical form.  (To keep operation simple, no numerical data is transmitted.)  Although the communication protocol between core and frontend is already fixed, coding the GUI itself remains a work in progress.
+The 'frontend' is a graphical interface, e.g. a web browser, that lets the user select particular PPMI datasets, suggests modes of analysis, and displays the results in strictly graphical form.  (To keep operation simple, no numerical data is transmitted.)  Although the communication protocol between core and frontend is already fixed, coding the GUI itself remains a work in progress.
 
-Schematically, the structure of the ML framework is therefore as follows:
+The structure of the ML framework is depicted schematically below:
 
-![Machine Learning Framework - Overview]("/PD-Learn Presentation/mlframework.jpg" "Title")
+![Machine Learning Framework - Overview](PD-Learn Presentation/mlframework.jpg "Title")
 
 ### Folder Contents
 
 The different elements of the project have been separated into several folders.  A quick overview is below; detailed information can be found in each folder.
 
-*	PPMI Backend
+*	*PPMI Backend*<br>
 	Data ingestion and organization scripts and methods.
 
-*	PPMI Genetics
+*	*PPMI Genetics*<br>
 	Methods to facilitate statistical genome analysis using the PLINK utility.  (Results to be implemented into the data at a later point.)
 
-*	PPMI Graphics Library
+*	*PPMI Graphics Library*<br>
 	Methods to render one- and two-dimensional data plots as .png images
 
-*	PPMI Learn
+*	*PPMI Learn*<br>
 	Machine learning support for the core module
 
-*	PPMI Statistics Core
+*	*PPMI Statistics Core*<br>
 	Elements of the module responsible for data selection and analysis, communication with the user interface.
 
-*	PD-Learn Presentation
-	A brief [presentation]("/PD-Learn Presentation/PD-Learn.pdf") of the project, including some preliminary findings.
+*	*PD-Learn Presentation*<br>
+	A brief presentation of the project, including some preliminary findings.
 
