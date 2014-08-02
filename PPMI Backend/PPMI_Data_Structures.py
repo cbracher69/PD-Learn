@@ -98,8 +98,8 @@ def extract_test_information(fileinfo = '../PPMI Analysis/selectdata.json'):
     
     # Set up lists/dicts:
 
-    file_list = []
-    test_list = []
+    file_set = set()
+    test_set = set()
     test_dict = {}
     
     # Open information file
@@ -117,11 +117,14 @@ def extract_test_information(fileinfo = '../PPMI Analysis/selectdata.json'):
     datasets = selection.keys()
 
     for entry in datasets:
-        file_list.append(selection[entry]['filename'])
-        test_list += selection[entry]['testlist']
+
+        # Add entries to sets (remove duplicates)
+
+        file_set.update([selection[entry]['filename']])
+        test_set.update(selection[entry]['testlist'])
         test_dict.update(selection[entry]['testdict']) 
     
-    return file_list, test_list, test_dict
+    return list(file_set), list(test_set), test_dict
 
 
 # Unfortunately, not all PPMI data files follow the same format convention.
@@ -144,7 +147,6 @@ def read_PPMI_data(fileinfo, infolog, data_array, subject_list, event_list, test
     # test_dict - translation dictionary PPMI abbreviation : descriptor
 
     # Open database:
-
     try:
         ppmi_data = pd.io.parsers.read_table(fileinfo, sep =',', header = 0, index_col = False)
 
