@@ -111,4 +111,4 @@ Read requested plot from JSON control string, render it as an image, and return 
 
 #### Future improvements
 
-Add additional algorithms for machine learning analysis, such as clustering and PCA.  Implement the frontend application as a webpage or GUI.  Extend range of PPMI study data to include categorical/numerical results.
+Add additional algorithms for machine learning analysis, such as clustering.  Implement the frontend application as a webpage or GUI.  Extend range of PPMI study data to include categorical/numerical results.
