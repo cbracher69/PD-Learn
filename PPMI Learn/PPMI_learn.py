@@ -2,11 +2,16 @@
 # A collection of machine-learning related methods for project PD-LEARN
 # Christian Bracher, July 2014
 
+# New (August 9, 2014):
+# - Allow image type selection for CM plot (Gauss vs. scatter)
+# - Add PCA view (projection on PCA components of leading importance)
+
 from sklearn.cross_validation import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import confusion_matrix, roc_curve, auc
+from sklearn.decomposition import PCA
 
 import numpy as np
 import pandas as pd
@@ -26,19 +31,20 @@ import PPMI_Gaussplots as scg
 #        distance between average feature vectors in any two-dimensional projection of
 #        feature space, so it *may* show differences between cohorts most clearly.
 #
-# The graphical rendering is executed by the scatter_gauss method.
+# The graphical rendering is executed by the scatter_gauss and scatter_plain methods.
 #
 # Parameters:
 # norm_table - pandas DataFrame containing a normalized data set
 # data_avg - pandas DataFrame containing summary statistics of the same set
 # subj_cond - pandas Series: cohort vs. subject ID
 # cohorts - list of subject cohorts present in data
+# image_type - rendering mechanism.  Should be either 'Gauss' or 'Scatter'
 #
 # Returns: 
 # png_data - string containing the rendered image in PNG format
 # 
 
-def center_mass_view(norm_table, data_avg, subj_cond, cohorts):
+def center_mass_view(norm_table, data_avg, subj_cond, cohorts, image_type):
 
     # Check that indeed all three cohorts are present
 
@@ -75,9 +81,62 @@ def center_mass_view(norm_table, data_avg, subj_cond, cohorts):
 
     # Send out to graphics rendering engine:
 
-    png_data = scg.scatter_gauss(CM_coord_1, CM_coord_2, subj_cond)
+    if (image_type == 'Gauss'):
+        return scg.scatter_gauss(CM_coord_1, CM_coord_2, subj_cond)
+    elif (image_type == 'Scatter'):
+        return scg.scatter_plain(CM_coord_1, CM_coord_2, subj_cond)
 
-    return png_data
+# PCA view (projection on principal components of leading importance)
+#
+# Idea:  Use normalized data from features to find the two directions that explain
+#        most of the variance of the data, and use the plane they span for
+#        projection.  This yields a projection that is the overall "closest fit" to
+#        the data in the sense that the sum of the squared distances of all data points
+#        to the plane of projection is minimized.
+#
+# The graphical rendering is executed by the scatter_gauss and scatter_plain methods.
+#
+# Parameters:
+# norm_table - pandas DataFrame containing a normalized data set
+# subj_cond - pandas Series: cohort vs. subject ID
+# cohorts - list of subject cohorts present in data
+# image_type - rendering mechanism.  Should be either 'Gauss' or 'Scatter'
+#
+# Returns: 
+# png_data - string containing the rendered image in PNG format
+# 
+
+def pca_view(norm_table, subj_cond, cohorts, image_type):
+
+    # SVG-PCA analysis: Plot projections onto plane spanned by the two most 
+    # significant principal axes (PCA components)
+
+    # Keep only two principal components
+    pca = PCA(n_components=2)
+
+    # Use normalized data:    
+    norm_data = norm_table.as_matrix()
+
+    # Find principal axes:
+    pca.fit(norm_data)
+
+    # Project on principal components:
+    pca_data = pca.transform(norm_data)
+
+    # 'Captured' variance in percent:
+    pca_var  = 100.0 * pca.explained_variance_ratio_.sum()
+    pca_note = '(Capture ratio: %.1f%%)' % pca_var
+
+    # Prepare for view:
+    cols = ['PCA View', pca_note]
+    pca_table = pd.DataFrame(pca_data, index = norm_table.index, columns = cols)
+    
+    # Send out to graphics rendering engine:
+
+    if (image_type == 'Gauss'):
+        return scg.scatter_gauss(pca_table[cols[0]], pca_table[cols[1]], subj_cond)
+    elif (image_type == 'Scatter'):
+        return scg.scatter_plain(pca_table[cols[0]], pca_table[cols[1]], subj_cond)
 
 
 # Receiver-Operating Characteristic

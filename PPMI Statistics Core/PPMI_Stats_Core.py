@@ -1,6 +1,10 @@
 # PPMI Statistics Core Module
 # Christian Bracher, July 2014
 
+# Update (August 9, 2014):
+# - Added support for PCA analysis
+# - Options regarding profile, scatter plots
+
 # ******** METHODS:
 
 # 
@@ -433,28 +437,29 @@ def list_available_plots(norm_table, cohorts):
     if (test_count == 1):
         
         # Add profile plot
-        
-        test_dict['Profile'].append('Profile')
+        test_dict['Profile'].extend(['Cumulative', 'Probability Density'])
         
     else:
         if (test_count == 2):
             
             # Add correlation plot
-            
-            test_dict['Correlation'].append('Correlation')
+            test_dict['Correlation'].extend(['Gaussplot', 'Scatterplot'])
             
         if (len(cohorts) > 1):
             
             # Add ROC plots
-            
             test_dict['ROC Curve'].extend(['Logistic Regression', 'kNN', 'Random Forest'])
             
-        if ((test_count > 2) and (len(cohorts) > 2)):
+        if (test_count > 2):
+
+            # Add PCA View:
+            test_dict['Projection'].extend(['PCA Gauss', 'PCA Scatter'])
+
+            if (len(cohorts) > 2):
             
-            # Add center-of-mass view:
-            
-            test_dict['Projection'].append('Center-of-Mass')
-    
+                # Add center-of-mass view:
+                test_dict['Projection'].extend(['Center-of-Mass Gauss', 'Center-of-Mass Scatter'])
+
     # Dictionary for JSON format
     
     available_tests = {'PPMI Tests' : test_dict}
@@ -492,32 +497,48 @@ def create_plot(image_request, norm_table, data_avg, subj_cond, cohorts, data_co
     
     if (image_type == 'Profile'):
         
-        # No options here ... find the single test selected
-        
         test_name = norm_table.columns[0]
         test_data = norm_table[test_name]
-        image_data = pgauss.profile_gauss(test_data, subj_cond, cohorts, data_counts)
+        
+        # Select cumulative (default) or probability density distribution:
+
+        cumulative = True
+        if (image_option == 'Probability Density'):
+        	cumulative = False
+
+        image_data = pgauss.profile_gauss(test_data, subj_cond, cohorts, data_counts, cumulative)
         
     elif (image_type == 'Correlation'):
-        
-        # Again, no options:
-        
+                
         test1_name = norm_table.columns[0]
         test1_data = norm_table[test1_name]
         test2_name = norm_table.columns[1]
         test2_data = norm_table[test2_name]
-        
-        image_data = pgauss.scatter_gauss(test1_data, test2_data, subj_cond)
+ 
+        # Select Gaussian background image (default) or plain scatterplot:
+
+        if (image_option == 'Scatterplot'):
+        	image_data = pgauss.scatter_plain(test1_data, test2_data, subj_cond)
+        else: 
+            image_data = pgauss.scatter_gauss(test1_data, test2_data, subj_cond)
         
     elif (image_type == 'Projection'):
         
-        # No options here yet ...
+        # Identify plot components in image_info
+        # First phrase carries selection PCA/CM plot
+        # Second phrase indicates Gaussian/scatter display
         
-        image_data = plearn.center_mass_view(norm_table, data_avg, subj_cond, cohorts)
+        image_info = image_option.split(' ')
+
+        if (image_info[0] == 'Center-of-Mass'):
+        	image_data = plearn.center_mass_view(norm_table, data_avg, subj_cond, cohorts, image_info[1])
+
+        elif (image_info[0] == 'PCA'):
+        	image_data = plearn.pca_view(norm_table, subj_cond, cohorts, image_info[1])
         
     elif (image_type == 'ROC Curve'):
         
-        # Calculate ROC crve with classifier chosen via the image option:
+        # Calculate ROC curve with classifier chosen via the image option:
         
         image_data = plearn.plot_roc_curve(norm_table, subj_cond, cohorts, image_option)
         
