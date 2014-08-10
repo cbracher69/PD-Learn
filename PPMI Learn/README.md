@@ -5,11 +5,11 @@ This is a collection of methods that involve machine learning on PPMI data, and 
 
 #### Brief description of the methods in the library
 
-Currently, there are two methods available:
+Currently, there are three methods available:
 
-	center_mass_view(norm_table, data_avg, subj_cond, cohorts)
+	center_mass_view(norm_table, data_avg, subj_cond, cohorts, image_type)
 
-This is a *projection method* that reduces multidimensional normalized data to a correlation plot (which is subsequently rendered by the *scatter_gauss* engine in the graphics library *PPMI_Gaussplots.py*).  The idea is based on the fact that PPMI data typically involves three cohorts (healthy (HC), Parkinson's (PD), and atypical Parkinson's (SWEDD) subjects).  The average feature vectors for these three cohorts form a triangle in feature space that defines a plane (which I call the 'center-of-mass' plane), which is used for the projection.  This choice of coordinate axes guarantees the maximum possible *average* separation between cohorts, and may assist in discovering patterns that are specific to the different cohorts.  As usual, the color coding in the map is:
+This is a *projection method* that reduces multidimensional normalized data to a correlation plot (which is subsequently rendered by the *scatter_gauss* and *scatter_plain* engines in the graphics library *PPMI_Gaussplots.py*).  The idea is based on the fact that PPMI data typically involves three cohorts (healthy (HC), Parkinson's (PD), and atypical Parkinson's (SWEDD) subjects).  The average feature vectors for these three cohorts form a triangle in feature space that defines a plane (which I call the 'center-of-mass' plane), which is used for the projection.  This choice of coordinate axes guarantees the maximum possible *average* separation between cohorts, and may assist in discovering patterns that are specific to the different cohorts.  As usual, the color coding in the map is:
 
 	Healthy control (HC) --- blue
 	Parkinson's Disease (PD) --- green
@@ -17,9 +17,15 @@ This is a *projection method* that reduces multidimensional normalized data to a
 
 *norm_table* is a dataframe containing multi-feature normalized data, *data_avg* is a dataframe containing basic statisics of the data (both are available using methods in the statistics core), *subj_cond* is a pandas Series object that contains cohort information (all data objects are indexed by the subject IDs), and *cohorts* is a list of the cohorts ('HC', 'PD', 'SWEDD') present in the data.  (The method is only available if all three cohorts are represented.)
 
+The variable *image_type* is used to select the graphics method used to draw the plot.  Allowed values are 'Gauss' (draw a correlation plot on a colored canvas using *scatter_gauss*) and 'Scatter' (draw a scatterplot on a white canvas using *scatter_plain*).
+
 The method returns a string containing graphics data in PNG format.
 
-The second method supports supervised learning:
+	pca_view(norm_table, subj_cond, cohorts, image_type)
+
+This is another *projection method* that reduces multidimensional normalized data to a correlation plot (see above).  Unlike the *center-mass_view* method, PCA can be performed even when only a single cohort is present, although there are clearer benefits in the multi-cohort case. The PCA method picks the two dominant orthogonal directions in space according to singular value decomposition (SVD), and projects the data points onto it.  Thereby, it generates a view onto the plane in feature space that minimizes the average square distance of data points to the plane of projection ("explains most of the variance," in statistics lingo).  The fraction of variance in the data "explained" by the two dominant directions is displayed in the title of the plot returned by the method.  The parameters used in calling the method are the same as above.  The image is returned in PNG format as a string.
+
+The third method supports supervised learning:
 
 	plot_roc_curve(norm_table, subj_cond, cohorts, classifier)
 
@@ -35,4 +41,4 @@ The method will also return information about the *area under the curve* as a me
 
 *	Currently, some parameters in the methods (e.g., classifier parameters, etc.) are hard-coded.  Ideally, these parameters should be able to be set by the calling program.
 
-*	The library should be extended by unsupervised learning algorithms (clustering, t-SNE, principal component analysis).
+*	The library should be extended by additional unsupervised learning algorithms (clustering, t-SNE).
