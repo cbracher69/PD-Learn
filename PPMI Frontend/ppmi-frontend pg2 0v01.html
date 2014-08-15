@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PD-Learn v0.01</title>
+    <style type="text/css">
+      html, body {
+        width: 1024px;
+        height: 100%;
+        margin: 0;
+      }
+      h2{
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 16pt;
+        font-style: bold;
+        color: rgb(128,0,0);
+        margin-left: 12px;
+      }
+      p{
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 14pt;
+        margin-left: 12px;
+      }
+      p.bottom{
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 8pt;
+        color: rgb(128,128,128);
+        margin-left: 12px;  
+      }
+      table{
+        border: 0px;
+      }
+      th,td{
+        border: 1px solid black;
+        text-align: center;
+      }
+      th,td{
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 10pt; 
+        padding: 2pt;
+      }
+      th{
+        font-style: bold;
+      }
+      table{
+        width: 960px;
+        margin-left: 32px;
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 12pt;
+      }
+      button{
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 14pt;
+      }
+      col.grey{
+        width: 32pt; 
+        background-color: rgb(240,240,240);
+      }
+      col.white{
+        width: 32pt; 
+        background-color: white;
+      }
+      th.grey{
+        border: 1px solid black;  
+        text-align: left;
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 11pt;
+        font-style: bold; 
+        padding: 5pt;
+        background-color: rgb(240,240,240);
+      }
+      th.white{
+        border: 1px solid black;  
+        text-align: left;
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 11pt;
+        font-style: bold; 
+        padding: 5pt;
+        background-color: white;
+      }
+      td.nr{
+        color: rgb(128,128,128);
+      }
+    </style>
+  </head>
+  <body>
+    <img src='header.jpg' width=1024 height=128 alt-txt='PD-Learn:  Statistical Analysis with PPMI' id='img-header'>
+    
+    <h2 id='page-2-headline'>Step #2: Select Type of Analysis</h2>
+
+    <p>
+      The following modes of analysis are available for the selected data sets.
+      Pick one, then click the <b>Continue</b> button:
+    </p>
+
+    <form id='select-algorithm'>
+      <table>
+        <tr>
+          <th class ='grey'>
+            <input type="radio" name="algorithm" value="Projection - Center of Mass - Gauss" checked>
+              &nbsp;&nbsp; Center of Mass Projection (enhanced)
+          </th>
+        </tr>
+        <tr>
+          <th class ='white'>
+            <input type="radio" name="algorithm" value="Projection - Center of Mass - plain">
+              &nbsp;&nbsp; Center of Mass Projection (plain)
+          </th>
+        </tr>
+        <tr>
+         <th class ='grey'>
+            <input type="radio" name="algorithm" value="Projection - PCA - Gauss">
+              &nbsp;&nbsp; PCA Projection (enhanced)
+          </th>
+        </tr>
+        <tr>
+          <th class ='white'>
+            <input type="radio" name="algorithm" value="Projection - PCA - plain">
+              &nbsp;&nbsp; PCA Projection (plain)
+          </th>
+        </tr>
+        <tr>
+          <th class ='grey'>
+            <input type="radio" name="algorithm" value="Classification - Logistic">
+              &nbsp;&nbsp; ROC Curve - Logistic Regression
+          </th>
+        </tr>
+        <tr>
+          <th class ='white'>
+            <input type="radio" name="algorithm" value="Classification - kNN">
+              &nbsp;&nbsp; ROC Curve - k-Next Neighbor Classifier
+          </th>
+        </tr>
+        <tr>
+          <th class ='grey'>
+             <input type="radio" name="algorithm" value="Classification - Random Forest">
+              &nbsp;&nbsp; ROC Curve - Random Forest Classifier
+          </th>
+        </tr>
+      </table>
+    </form>
+
+    &nbsp;<br>
+
+    <table id='page-2-jump-buttons'>
+      <colgroup>
+        <col style='width:660pt'>
+        <col style='width:100pt'>
+        <col style='width:100pt'>
+        <col style='width:100pt'>
+      </colgroup>
+      <tr>
+        <td style='border: 0px'> </td>
+        <td style='border: 0px; text-align: right'>
+          <button id='page-2-help-button' >
+            Tip
+          </button>
+        </td>
+        <td style='border: 0px; text-align: right'>
+          <button id='page-2-back-button' onclick="window.open('ppmi-frontend pg1 0v01.html', '_self')">
+            Back
+          </button>
+        </td>
+         <td style='border: 0px; text-align: right'>
+          <button id='page-2-continue-button' onclick="window.open('ppmi-frontend pg3 0v01.html', '_self')">
+            Continue
+          </button>
+        </td>
+      </tr>
+    </table>
+
+    <p class='bottom'>
+      Version 0.01 (mock-up) - Created August 11, 2014 - Author: Christian Bracher
+    </p>
+
+  </body>
+</html>

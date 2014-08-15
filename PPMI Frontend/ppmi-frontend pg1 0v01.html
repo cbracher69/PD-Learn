@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PD-Learn v0.01</title>
+    <style type="text/css">
+      html, body {
+        width: 1024px;
+        height: 100%;
+        margin: 0;
+      }
+      h2{
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 16pt;
+        font-style: bold;
+        color: rgb(128,0,0);
+        margin-left: 12px;
+      }
+      p{
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 14pt;
+        margin-left: 12px;
+      }
+      p.bottom{
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 8pt;
+        color: rgb(128,128,128);
+        margin-left: 12px;  
+      }
+      table{
+        border: 0px;
+      }
+      th,td{
+        border: 1px solid black;
+        text-align: center;
+      }
+      th,td{
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 10pt; 
+        padding: 2pt;
+      }
+      th{
+        font-style: bold;
+      }
+      table{
+        width: 960px;
+        margin-left: 32px;
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 12pt;
+      }
+      button{
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 14pt;
+      }
+      col.grey{
+        width: 32pt; 
+        background-color: rgb(240,240,240);
+      }
+      col.white{
+        width: 32pt; 
+        background-color: white;
+      }
+      td.nr{
+        color: rgb(128,128,128);
+      }
+    </style>
+  </head>
+  <body>
+    <img src='header.jpg' width=1024 height=128 alt-txt='PD-Learn:  Statistical Analysis with PPMI' id='img-header'>
+    
+    <h2 id='page-1-headline'>Step #1: Select Data Sets</h2>
+
+    <p>
+      These data sets are available for analysis.  
+      Mark the sets you'd like to include, then click the <b>Continue</b> button:
+    </p>
+
+    <table id='table-available-data-sets'>
+      <colgroup>
+        <col style='width:400pt'>
+        <col class='grey'>
+        <col class='white'>
+        <col class='grey'>
+        <col class='white'>
+        <col class='grey'>
+        <col class='white'>
+        <col class='grey'>
+        <col class='white'>
+        <col class='grey'>
+        <col class='white'>
+        <col class='grey'>
+        <col class='white'>
+        <col class='grey'>
+        <col class='white'>
+      </colgroup>
+      <tr>
+        <th style='border: 0px'> </th>
+        <th>SC</th>
+        <th>BL</th>
+        <th>V01</th>
+        <th>V02</th>
+        <th>V03</th>
+        <th>V04</th>
+        <th>V05</th>
+        <th>V06</th>
+        <th>V07</th>
+        <th>V08</th>
+        <th>V09</th>
+        <th>V10</th>
+        <th>V11</th>
+        <th>V12</th>
+      </tr>
+      <tr>
+        <th id='row-1-ix'>UPSIT Olfactory Score</th>
+        <td class='nr'><input type="checkbox" id="row-1-sc" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-1-bl"><br>655</td>
+        <td class='nr'><input type="checkbox" id="row-1-v01" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-1-v02" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-1-v03" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-1-v04" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-1-v05" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-1-v06" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-1-v07" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-1-v08" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-1-v09" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-1-v10" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-1-v11" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-1-v12" disabled='true'><br>0</td>
+      </tr>
+      <tr>
+        <th id='row-2-ix'>DaTSCAN Left Putamen</th>
+        <td><input type="checkbox" id="row-2-sc"><br>649</td>
+        <td class='nr'><input type="checkbox" id="row-2-bl" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-2-v01" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-2-v02" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-2-v03" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-2-v04"><br>323</td>
+        <td class='nr'><input type="checkbox" id="row-2-v05" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-2-v06"><br>130</td>
+        <td class='nr'><input type="checkbox" id="row-2-v07" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-2-v08" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-2-v09" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-2-v10"><br>2</td>
+        <td class='nr'><input type="checkbox" id="row-2-v11" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-2-v12" disabled='true'><br>0</td>
+      </tr>
+      <tr>
+        <th id='row-3-ix'>DaTSCAN Right Putamen</th>
+        <td><input type="checkbox" id="row-3-sc"><br>649</td>
+        <td class='nr'><input type="checkbox" id="row-3-bl" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-3-v01" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-3-v02" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-3-v03" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-3-v04"><br>323</td>
+        <td class='nr'><input type="checkbox" id="row-3-v05" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-3-v06"><br>130</td>
+        <td class='nr'><input type="checkbox" id="row-3-v07" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-3-v08" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-3-v09" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-3-v10"><br>2</td>
+        <td class='nr'><input type="checkbox" id="row-3-v11" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-3-v12" disabled='true'><br>0</td>
+      </tr>
+      <tr>
+        <th id='row-4-ix'>DaTSCAN Left Caudate</th>
+        <td><input type="checkbox" id="row-4-sc"><br>649</td>
+        <td class='nr'><input type="checkbox" id="row-4-bl" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-4-v01" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-4-v02" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-4-v03" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-4-v04"><br>323</td>
+        <td class='nr'><input type="checkbox" id="row-4-v05" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-4-v06"><br>130</td>
+        <td class='nr'><input type="checkbox" id="row-4-v07" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-4-v08" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-4-v09" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-4-v10"><br>2</td>
+        <td class='nr'><input type="checkbox" id="row-4-v11" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-4-v12" disabled='true'><br>0</td>
+      </tr>
+      <tr>
+        <th id='row-5-ix'>DaTSCAN Right Caudate</th>
+        <td><input type="checkbox" id="row-5-sc"><br>649</td>
+        <td class='nr'><input type="checkbox" id="row-5-bl" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-5-v01" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-5-v02" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-5-v03" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-5-v04"><br>323</td>
+        <td class='nr'><input type="checkbox" id="row-5-v05" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-5-v06"><br>130</td>
+        <td class='nr'><input type="checkbox" id="row-5-v07" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-5-v08" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-5-v09" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-5-v10"><br>2</td>
+        <td class='nr'><input type="checkbox" id="row-5-v11" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-5-v12" disabled='true'><br>0</td>
+      </tr>
+      <tr>
+        <th id='row-6-ix'>CSF Amyloid-beta 42</th>
+        <td class='nr'><input type="checkbox" id="row-6-sc" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-6-bl"><br>635</td>
+        <td class='nr'><input type="checkbox" id="row-6-v01" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-6-bl"><br>263</td>
+        <td class='nr'><input type="checkbox" id="row-6-v03" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-6-bl"><br>300</td>
+        <td class='nr'><input type="checkbox" id="row-6-v05" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-6-v06" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-6-v07" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-6-v08" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-6-v09" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-6-v10" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-6-v11" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-6-v12" disabled='true'><br>0</td>
+      </tr>
+      <tr>
+        <th id='row-7-ix'>CSF Alpha-Synuclein</th>
+        <td class='nr'><input type="checkbox" id="row-7-sc" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-7-bl"><br>635</td>
+        <td class='nr'><input type="checkbox" id="row-7-v01" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-7-bl"><br>262</td>
+        <td class='nr'><input type="checkbox" id="row-7-v03" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-7-bl"><br>300</td>
+        <td class='nr'><input type="checkbox" id="row-7-v05" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-7-v06" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-7-v07" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-7-v08" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-7-v09" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-7-v10" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-7-v11" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-7-v12" disabled='true'><br>0</td>
+      </tr>
+      <tr>
+        <th id='row-8-ix'>CSF Total Tau-Protein</th>
+        <td class='nr'><input type="checkbox" id="row-8-sc" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-8-bl"><br>629</td>
+        <td class='nr'><input type="checkbox" id="row-8-v01" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-8-bl"><br>262</td>
+        <td class='nr'><input type="checkbox" id="row-8-v03" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-8-bl"><br>299</td>
+        <td class='nr'><input type="checkbox" id="row-8-v05" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-8-v06" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-8-v07" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-8-v08" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-8-v09" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-8-v10" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-8-v11" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-8-v12" disabled='true'><br>0</td>
+      </tr>
+      <tr>
+        <th id='row-9-ix'>CSF Phosphorylated Tau-Protein</th>
+        <td class='nr'><input type="checkbox" id="row-9-sc" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-9-bl"><br>633</td>
+        <td class='nr'><input type="checkbox" id="row-9-v01" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-9-bl"><br>263</td>
+        <td class='nr'><input type="checkbox" id="row-9-v03" disabled='true'><br>0</td>
+        <td><input type="checkbox" id="row-9-bl"><br>299</td>
+        <td class='nr'><input type="checkbox" id="row-9-v05" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-9-v06" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-9-v07" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-9-v08" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-9-v09" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-9-v10" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-9-v11" disabled='true'><br>0</td>
+        <td class='nr'><input type="checkbox" id="row-9-v12" disabled='true'><br>0</td>
+      </tr>      
+    </table>
+
+    &nbsp;<br>
+
+    <table id='page-1-jump-buttons'>
+      <colgroup>
+        <col style='width:660pt'>
+        <col style='width:100pt'>
+        <col style='width:100pt'>
+        <col style='width:100pt'>
+      </colgroup>
+      <tr>
+        <td style='border: 0px'> </td>
+        <td style='border: 0px; text-align: right'>
+          <button id='page-1-help-button' >
+            Tip
+          </button>
+        </td>
+        <td style='border: 0px'> </td>
+        <td style='border: 0px; text-align: right'>
+          <button id='page-1-continue-button' onclick="window.open('ppmi-frontend pg2 0v01.html', '_self')">
+            Continue
+          </button>
+        </td>
+      </tr>
+    </table>
+
+    <p class='bottom'>
+      Version 0.01 (mock-up) - Created August 11, 2014 - Author: Christian Bracher
+    </p>
+
+  </body>
+</html>
