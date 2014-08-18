@@ -1,10 +1,14 @@
 # PPMI-LEARN
 # A collection of machine-learning related methods for project PD-LEARN
-# Christian Bracher, July 2014
+# Christian Bracher, July/August 2014
 
 # New (August 9, 2014):
 # - Allow image type selection for CM plot (Gauss vs. scatter)
 # - Add PCA view (projection on PCA components of leading importance)
+
+# New (August 17, 2014):
+# - Calculate/display capture ratio for CM plot
+# - Add t-SNE nonlinear embedding algorithm
 
 from sklearn.cross_validation import train_test_split
 from sklearn.linear_model import LogisticRegression
@@ -12,12 +16,17 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import confusion_matrix, roc_curve, auc
 from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
 
 import numpy as np
 import pandas as pd
 import StringIO
 import matplotlib.pyplot as plt
 
+# PPMI analysis intake module:
+import PPMI_Stats_Core as ppmi
+
+# PPMI graphics engine
 import PPMI_Gaussplots as scg
 
 # Center-of-mass view:
@@ -31,7 +40,12 @@ import PPMI_Gaussplots as scg
 #        distance between average feature vectors in any two-dimensional projection of
 #        feature space, so it *may* show differences between cohorts most clearly.
 #
+# Note:  This essentially reproduces the 'Canonical Discriminate Analysis' (CDA)
+#        algorithm in unsupervised learning.
+#
 # The graphical rendering is executed by the scatter_gauss and scatter_plain methods.
+# The title gives information about the 'capture ratio' - the amount of variance of
+# the data contained in the projection.
 #
 # Parameters:
 # norm_table - pandas DataFrame containing a normalized data set
@@ -76,8 +90,21 @@ def center_mass_view(norm_table, data_avg, subj_cond, cohorts, image_type):
 
     # Project normalized feature vectors for all subjects onto the center-of-mass plane
 
-    CM_coord_1 = pd.Series(norm_table.dot(unit_1), name = 'Center of Mass')
-    CM_coord_2 = pd.Series(norm_table.dot(unit_2), name = 'View')
+    proj_1 = norm_table.dot(unit_1)
+    proj_2 = norm_table.dot(unit_2)
+
+    # Find "Capture Ratio" - how much of the variance (total square length) of all vectors 
+    # is contained in the two directions chosen?  Note that the total variance for the
+    # normalized table norm_table should be the number of coordinate entries.
+
+    Capture = (proj_1.dot(proj_1) + proj_2.dot(proj_2))
+    total_variance = float(len(norm_table.index) * len(norm_table.columns))
+    Capture_Ratio = '(Capture ratio: %.1f%%)' % (100.0 * Capture / total_variance)
+
+    # Create coordinate series for display (including title indicating capture ratio in %)
+
+    CM_coord_1 = pd.Series(proj_1, name = 'Center of Mass (CDA) View')
+    CM_coord_2 = pd.Series(proj_2, name = Capture_Ratio)
 
     # Send out to graphics rendering engine:
 
@@ -95,6 +122,8 @@ def center_mass_view(norm_table, data_avg, subj_cond, cohorts, image_type):
 #        to the plane of projection is minimized.
 #
 # The graphical rendering is executed by the scatter_gauss and scatter_plain methods.
+# The title gives information about the 'capture ratio' - the amount of variance of
+# the data contained in the projection.
 #
 # Parameters:
 # norm_table - pandas DataFrame containing a normalized data set
@@ -137,6 +166,66 @@ def pca_view(norm_table, subj_cond, cohorts, image_type):
         return scg.scatter_gauss(pca_table[cols[0]], pca_table[cols[1]], subj_cond)
     elif (image_type == 'Scatter'):
         return scg.scatter_plain(pca_table[cols[0]], pca_table[cols[1]], subj_cond)
+
+
+# t-SNE view (stochastic neighbor embedding)
+#
+# Idea:  This is a modern method of representing clustering in feature space in a two-
+#        dimensional 'embedding space' that can be visualized by a scatterplot.
+#        The method is non-linear and the functional used in optimisation is not convex, 
+#        so the t-SNE algorithm can converge to different minima in embedded space.  
+#        It is initialized from a random seed and therefore generally produces different 
+#        results with each run.
+#        If the feature set has more than 12 dimensions, feature reduction using PCA
+#        is performed first.
+#        Like any embedding method, t-SNE works best with well separated clusters of data.
+#
+# The graphical rendering is executed by the scatter_gauss and scatter_plain methods.
+#
+# Parameters:
+# norm_table - pandas DataFrame containing a normalized data set
+# subj_cond - pandas Series: cohort vs. subject ID
+# cohorts - list of subject cohorts present in data
+# image_type - rendering mechanism.  Should be either 'Gauss' or 'Scatter'
+#
+# Returns: 
+# png_data - string containing the rendered image in PNG format
+# 
+
+def t_sne_view(norm_table, subj_cond, cohorts, image_type):
+
+    # t-SNE analysis: Use stochastic neighbor embedding to reduce dimensionality of
+    # data set to two dimensions in a non-linear, distance dependent fashion
+
+    # Perform PCA data reduction if dimensionality of feature space is large:
+    if len(norm_table.columns) > 12:
+        pca = PCA(n_components = 12)
+        pca.fit(norm_table.as_matrix())
+        
+        raw_data = pca.transform(norm_table.as_matrix())
+    else:
+        raw_data = norm_table.as_matrix()
+ 
+    # Transform data into a two-dimensional embedded space:
+    tsne = TSNE(n_components = 2, perplexity = 40.0, early_exaggeration= 2.0, 
+        learning_rate = 100.0, init = 'pca')
+
+    tsne_data = tsne.fit_transform(raw_data)
+
+    # Prepare for normalization and view:
+    cols = ['t-SNE', 'Cluster Visualization']
+    tsne_table = pd.DataFrame(tsne_data, index = norm_table.index, columns = cols)
+           
+    # The output is no longer centered or normalized, so shift & scale it before display:
+    tsne_avg = ppmi.data_stats(tsne_table, subj_cond, cohorts)
+    tsne_norm_table = ppmi.normalize_table(tsne_table, tsne_avg)       
+    
+    # Send out to graphics rendering engine:
+
+    if (image_type == 'Gauss'):
+        return scg.scatter_gauss(tsne_norm_table[cols[0]], tsne_norm_table[cols[1]], subj_cond)
+    elif (image_type == 'Scatter'):
+        return scg.scatter_plain(tsne_norm_table[cols[0]], tsne_norm_table[cols[1]], subj_cond)
 
 
 # Receiver-Operating Characteristic
