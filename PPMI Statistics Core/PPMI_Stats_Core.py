@@ -4,6 +4,10 @@
 # Update (August 9, 2014):
 # - Added support for PCA analysis
 # - Options regarding profile, scatter plots
+#
+# Update (August 19, 2014):
+# - Added support for t-SNE clustering
+# - Minor bug fix (constant data sets w/o variation)
 
 # ******** METHODS:
 
@@ -65,51 +69,51 @@ def unpickle_PPMI_data(filename = 'PPMI_data.pkl'):
 # available_data - a JSON string that contains a dictionary of all event-test combinations.
 
 def list_available_data(event_list, test_list, data_panel):
-    
-    # Placeholder dictionary
-    
-    data_dict = {}
-    
-    # Step through list of study 'events' (timeline):
-    
-    for event in event_list:
-        
-        # Slice out dataframe from panel:
-        
-        event_frame = data_panel[event]
-        
-        # Create placeholder list:
-        
-        tests_in_event = []
-        
-        # Step through tests:
-        
-        for test in test_list:
-            
-            test_data = event_frame[test]
-            
-            # Check whether there is any data in this test series:
-            
-            contains_data = test_data.notnull().any()
-            
-            # Append if data was found:
-            
-            if (contains_data == True):
-                tests_in_event.append(test)
-                
-        # Add sorted list to data dictionary, if any test was found for event:
-        
-        if (len(tests_in_event) > 0):
-            tests_in_event.sort()
-            data_dict.update({event : tests_in_event})
-       
-    # Dictionary for JSON format
-    
-    available_data = {'PPMI All Data': data_dict}
-    
-    # Return as JSON string, event keys sorted alphabetically 
-    
-    return js.dumps(available_data, sort_keys = True)
+	
+	# Placeholder dictionary
+	
+	data_dict = {}
+	
+	# Step through list of study 'events' (timeline):
+	
+	for event in event_list:
+		
+		# Slice out dataframe from panel:
+		
+		event_frame = data_panel[event]
+		
+		# Create placeholder list:
+		
+		tests_in_event = []
+		
+		# Step through tests:
+		
+		for test in test_list:
+			
+			test_data = event_frame[test]
+			
+			# Check whether there is any data in this test series:
+			
+			contains_data = test_data.notnull().any()
+			
+			# Append if data was found:
+			
+			if (contains_data == True):
+				tests_in_event.append(test)
+				
+		# Add sorted list to data dictionary, if any test was found for event:
+		
+		if (len(tests_in_event) > 0):
+			tests_in_event.sort()
+			data_dict.update({event : tests_in_event})
+	   
+	# Dictionary for JSON format
+	
+	available_data = {'PPMI All Data': data_dict}
+	
+	# Return as JSON string, event keys sorted alphabetically 
+	
+	return js.dumps(available_data, sort_keys = True)
 
 # Create lists that indicate membership of study subjects to the three 'cohorts':
 # 'HC' (healthy control), 'PD' (Parkinson's Disease), 'SWEDD' (scan w/o evidence of dopaminergic deficiency)
@@ -396,13 +400,21 @@ def normalize_table(data_table, data_avg):
 	norm_table = data_table.copy()
 	
 	# Normalize table - express deviation from column average in units of column standard deviation
+	# (Bug fix, 08/19/14:  Remove columns w/o variation.)
 	
 	for column in column_list:
 		avg = data_avg[column]['global mean']
 		std = data_avg[column]['std dev']
 		
-		norm_table[column] = norm_table[column].apply(lambda x : (float(x) - avg) / std)
-	
+		if (std > 0):
+
+			# Normalize Column
+			norm_table[column] = norm_table[column].apply(lambda x : (float(x) - avg) / std)
+
+		else:
+			# Remove Column - all values are constant, anyway
+			norm_table.drop(column, axis = 1, inplace = True)
+
 	return norm_table
 
 
@@ -411,7 +423,8 @@ def normalize_table(data_table, data_avg):
 # By definition, the core suggests a profile plot only if a single data series is chosen.
 # If two data series are chosen, it suggests a correlation plot.
 # If two or more data series are chosen, and the data contains at least two cohorts, ROC plots are available.
-# If more than two series are chosen, and the data contains all three cohorts, it suggests a center-of-mass plot, too.
+# If more than two series are chosen, projections are available:  PCA, non-linear t-SNE clustering.
+# If additionally the data contains all three cohorts, it suggests a center-of-mass plot, too.
 #
 # Parameters:
 # norm_table - Dataframe containing normalized data
@@ -426,51 +439,54 @@ def normalize_table(data_table, data_avg):
 
 def list_available_plots(norm_table, cohorts):
 
-    # Set up dictionaries, lists:
-    
-    test_dict = {'Profile':[], 'Correlation':[], 'Projection':[], 'ROC Curve':[]}
-       
-    # Find number of tests selected:
-    
-    test_count = len(norm_table.columns)
+	# Set up dictionaries, lists:
+	
+	test_dict = {'Profile':[], 'Correlation':[], 'Projection':[], 'ROC Curve':[]}
+	   
+	# Find number of tests selected:
+	
+	test_count = len(norm_table.columns)
 
-    if (test_count == 1):
-        
-        # Add profile plot
-        test_dict['Profile'].extend(['Cumulative', 'Probability Density'])
-        
-    else:
-        if (test_count == 2):
-            
-            # Add correlation plot
-            test_dict['Correlation'].extend(['Gaussplot', 'Scatterplot'])
-            
-        if (len(cohorts) > 1):
-            
-            # Add ROC plots
-            test_dict['ROC Curve'].extend(['Logistic Regression', 'kNN', 'Random Forest'])
-            
-        if (test_count > 2):
+	if (test_count == 1):
+		
+		# Add profile plot
+		test_dict['Profile'].extend(['Cumulative', 'Probability Density'])
+		
+	else:
+		if (test_count == 2):
+			
+			# Add correlation plot
+			test_dict['Correlation'].extend(['Gaussplot', 'Scatterplot'])
+		
+		else:
+			# Feature space is three- or higher-dimensional
 
-            # Add PCA View:
-            test_dict['Projection'].extend(['PCA Gauss', 'PCA Scatter'])
+			# Add PCA projection, t-SNE cluster view:
+			test_dict['Projection'].extend(['PCA Gauss', 'PCA Scatter'])
+			test_dict['Projection'].extend(['t-SNE Gauss', 't-SNE Scatter'])
 
-            if (len(cohorts) > 2):
-            
-                # Add center-of-mass view:
-                test_dict['Projection'].extend(['Center-of-Mass Gauss', 'Center-of-Mass Scatter'])
+			if (len(cohorts) > 2):
+			
+				# Add center-of-mass view:
+				test_dict['Projection'].extend(['Center-of-Mass Gauss', 'Center-of-Mass Scatter'])
+			
+		if (len(cohorts) > 1):
+			
+			# Add ROC plots
+			test_dict['ROC Curve'].extend(['Logistic Regression', 'kNN', 'Random Forest'])
+			
 
-    # Dictionary for JSON format
-    
-    available_tests = {'PPMI Tests' : test_dict}
-    
-    return js.dumps(available_tests, sort_keys = True)
+	# Dictionary for JSON format
+	
+	available_tests = {'PPMI Tests' : test_dict}
+	
+	return js.dumps(available_tests, sort_keys = True)
 
-    # Respond to image request - run graphics, return PNG image file as string
+	# Respond to image request - run graphics, return PNG image file as string
 #
 # Image requests have the form of a short JSON string:
 #
-#    {"PPMI Image" : {"Type" : type, "Option" : option}}
+#	{"PPMI Image" : {"Type" : type, "Option" : option}}
 #
 # where 'type' is one of {'Correlation', 'Profile', 'Projection', 'ROC Curve'}, and 'option' indicates the subtype.
 #
@@ -486,60 +502,63 @@ def list_available_plots(norm_table, cohorts):
 # image_data - string containing the graphics data in PNG format
 
 def create_plot(image_request, norm_table, data_avg, subj_cond, cohorts, data_counts):
-    
-    # Turn request into dictionary, then extract option chosen:
-    
-    image_dict   = js.loads(image_request)['PPMI Image']
-    image_type   = image_dict['Type']
-    image_option = image_dict['Option']
-    
-    # Select type, and render image:
-    
-    if (image_type == 'Profile'):
-        
-        test_name = norm_table.columns[0]
-        test_data = norm_table[test_name]
-        
-        # Select cumulative (default) or probability density distribution:
+	
+	# Turn request into dictionary, then extract option chosen:
+	
+	image_dict   = js.loads(image_request)['PPMI Image']
+	image_type   = image_dict['Type']
+	image_option = image_dict['Option']
+	
+	# Select type, and render image:
+	
+	if (image_type == 'Profile'):
+		
+		test_name = norm_table.columns[0]
+		test_data = norm_table[test_name]
+		
+		# Select cumulative (default) or probability density distribution:
 
-        cumulative = True
-        if (image_option == 'Probability Density'):
-        	cumulative = False
+		cumulative = True
+		if (image_option == 'Probability Density'):
+			cumulative = False
 
-        image_data = pgauss.profile_gauss(test_data, subj_cond, cohorts, data_counts, cumulative)
-        
-    elif (image_type == 'Correlation'):
-                
-        test1_name = norm_table.columns[0]
-        test1_data = norm_table[test1_name]
-        test2_name = norm_table.columns[1]
-        test2_data = norm_table[test2_name]
+		image_data = pgauss.profile_gauss(test_data, subj_cond, cohorts, data_counts, cumulative)
+		
+	elif (image_type == 'Correlation'):
+				
+		test1_name = norm_table.columns[0]
+		test1_data = norm_table[test1_name]
+		test2_name = norm_table.columns[1]
+		test2_data = norm_table[test2_name]
  
-        # Select Gaussian background image (default) or plain scatterplot:
+		# Select Gaussian background image (default) or plain scatterplot:
 
-        if (image_option == 'Scatterplot'):
-        	image_data = pgauss.scatter_plain(test1_data, test2_data, subj_cond)
-        else: 
-            image_data = pgauss.scatter_gauss(test1_data, test2_data, subj_cond)
-        
-    elif (image_type == 'Projection'):
-        
-        # Identify plot components in image_info
-        # First phrase carries selection PCA/CM plot
-        # Second phrase indicates Gaussian/scatter display
-        
-        image_info = image_option.split(' ')
+		if (image_option == 'Scatterplot'):
+			image_data = pgauss.scatter_plain(test1_data, test2_data, subj_cond)
+		else: 
+			image_data = pgauss.scatter_gauss(test1_data, test2_data, subj_cond)
+		
+	elif (image_type == 'Projection'):
+		
+		# Identify plot components in image_info
+		# First phrase carries selection PCA/CM/t-SNE plot
+		# Second phrase indicates Gaussian/scatter display
+		
+		image_info = image_option.split(' ')
 
-        if (image_info[0] == 'Center-of-Mass'):
-        	image_data = plearn.center_mass_view(norm_table, data_avg, subj_cond, cohorts, image_info[1])
+		if (image_info[0] == 'Center-of-Mass'):
+			image_data = plearn.center_mass_view(norm_table, data_avg, subj_cond, cohorts, image_info[1])
 
-        elif (image_info[0] == 'PCA'):
-        	image_data = plearn.pca_view(norm_table, subj_cond, cohorts, image_info[1])
-        
-    elif (image_type == 'ROC Curve'):
-        
-        # Calculate ROC curve with classifier chosen via the image option:
-        
-        image_data = plearn.plot_roc_curve(norm_table, subj_cond, cohorts, image_option)
-        
-    return image_data
+		elif (image_info[0] == 'PCA'):
+			image_data = plearn.pca_view(norm_table, subj_cond, cohorts, image_info[1])
+
+		elif (image_info[0] == 't-SNE'):
+			image_data = plearn.t_sne_view(norm_table, subj_cond, cohorts, image_info[1])
+		
+	elif (image_type == 'ROC Curve'):
+		
+		# Calculate ROC curve with classifier chosen via the image option:
+		
+		image_data = plearn.plot_roc_curve(norm_table, subj_cond, cohorts, image_option)
+		
+	return image_data
