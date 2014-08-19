@@ -57,4 +57,5 @@ All four command line entries are optional; if missing, they will be replaced by
 
 #### Future improvements
 
-At this stage, the backend can only import tests with numerical output into the data object.  Although this captures a large number of PPMI scores, it would be desirable to add non-numerical data to the set, in particular genetics and raw imaging data.
+At this stage, the backend can only import tests with numerical output into the data object.  Although this captures a large number of PPMI scores, it would be desirable to add non-numerical data to the set, in particular genome and raw imaging data.  (The backend now translates single nucleotid polymorphism (SNP) data and Apolipoprotein-E genotype into
+numerical form.)
