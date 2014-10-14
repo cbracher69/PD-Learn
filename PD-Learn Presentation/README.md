@@ -3,6 +3,10 @@ PPMI Presentations
 
 This folder contains a few presentations regarding work on the PPMI study done for Bayes Impact and the Michael J. Fox Foundation.
 
+### MJFF Presentation (October 2014)
+
+This is a comprehensive update, aimed at MJFF stakeholders (research directors, principal investigators).  It contains an improved version of the classifier for Parkinson's Disease/SWEDD based on olfactory ability, fine motor difficulties, and autonomous function disorder (adaptability), as well as new analyses on biomarkers in PPMI, and genetic differences between PD and SWEDD patients.  Some of the work makes use of Ayasdi's [topological data analysis](http://www.ayasdi.com) tools.
+
 ### Project PPMI Report
 
 A fairly extensive report on work with PPMI data, composed together with Mijail Gomez (Zipfian Academy & Bayes Impact data science fellow).  It details some machine learning insights into the significance of different features of the PPMI study, illustrates a combination of easily accessible tests (olfactory ability, REM sleep behavior, self-reported motor difficulties) that is highly predictive for "classical" Parkinson's Disease and successfully distinguishes a variant ('SWEDD') that is misclassified by the current standard of testing, DaTSCAN (a brain imaging technique).
